@@ -7,7 +7,7 @@ import com.lddecker.words.WordAnalyzer;
 import java.util.Collection;
 import java.util.List;
 
-public class Main {
+public class Wordbag {
 
     public static void main(String[] args) {
         String letters = args[0];
