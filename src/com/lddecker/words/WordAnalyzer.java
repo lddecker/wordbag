@@ -15,9 +15,11 @@ public class WordAnalyzer {
     }
 
     public Collection<String> getWords(String letters) {
-        List<String> possibleWords = new ArrayList<String>();
+        List<String> possibleWords = new ArrayList<>();
+        Map<Character, Integer> lettersMap = getLetterCounts(letters);
+        int lettersSize = letters.length();
         for (String dictionaryWord : _dictionary) {
-            if (wordCanBeBuiltFromLetters(dictionaryWord, letters)) {
+            if (wordCanBeBuiltFromLetters(dictionaryWord, lettersMap, lettersSize)) {
                 possibleWords.add(dictionaryWord);
             }
         }
@@ -25,12 +27,11 @@ public class WordAnalyzer {
         return possibleWords;
     }
 
-    private boolean wordCanBeBuiltFromLetters(String dictionaryWord, String letters) {
-        if (dictionaryWord.length() > letters.length()) {
+    private boolean wordCanBeBuiltFromLetters(String dictionaryWord, Map<Character, Integer> lettersMap, int lettersSize) {
+        if (dictionaryWord.length() > lettersSize) {
             return false;
         }
-        Map<Character, Integer> dictionaryWordLetterMap = getLetterArray(dictionaryWord);
-        Map<Character, Integer> lettersMap = getLetterArray(letters);
+        Map<Character, Integer> dictionaryWordLetterMap = getLetterCounts(dictionaryWord);
         for (Map.Entry<Character, Integer> entry : dictionaryWordLetterMap.entrySet()) {
             if (!lettersMap.containsKey(entry.getKey())) {
                 return false;
@@ -43,8 +44,8 @@ public class WordAnalyzer {
         return true;
     }
 
-    private Map<Character, Integer> getLetterArray(String word) {
-        Map<Character, Integer> characterMap = new HashMap<Character, Integer>();
+    private Map<Character, Integer> getLetterCounts(String word) {
+        Map<Character, Integer> characterMap = new HashMap<>();
         for (char character : word.toCharArray()) {
             if (characterMap.containsKey(character)) {
                 characterMap.put(character, characterMap.get(character) + 1);
